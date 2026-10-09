@@ -5,7 +5,7 @@
 **Department:** Department of Electronics & Telecommunication Engineering, MIT Academy of Engineering, Alandi (D), Pune  
 **Student Name:** Amir Furquani  
 **PRN:** 202301070165  
-**Course Teacher:** Dr. Ashish Mulajkar  
+**Course Teacher:** Nutan Bansode  
 **Course Outcome:** CO2 – *Implementation of Collaborative tools* | **RBT Level:** Level 3 (Apply)  
 **Methodology:** AI-Assisted Embedded Firmware Engineering & Quality Assurance  
 
