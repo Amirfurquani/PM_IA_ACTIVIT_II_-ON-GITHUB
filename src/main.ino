@@ -7,13 +7,15 @@
  * 
  * Hardware Target: Microchip ATmega328P / Arduino Uno R3
  * 
- * Commit Scope: Fixes Issue #1 (Replaced blocking delay() with non-blocking millis() scheduler)
+ * Commit Scope: Fixes Issue #2 (Enabled INPUT_PULLUP and 50ms software debounce filter)
  */
 
 #include "config.h"
+#include "button_handler.h"
 #include "led_controller.h"
 
 // Hardware Interface Objects
+ButtonHandler modeButton(PIN_MODE_BUTTON, BUTTON_DEBOUNCE_DELAY_MS);
 LEDController ledEngine(PIN_STATUS_LED, PIN_EXTERNAL_LED, PIN_HEARTBEAT_LED);
 
 // Performance & Telemetry Tracking
@@ -35,23 +37,27 @@ void setup() {
     Serial.begin(SERIAL_BAUD_RATE);
     while (!Serial && millis() < 1000);
 
-    Serial.println(F("[BOOT] Non-blocking millis() scheduler initialized."));
+    Serial.println(F("[BOOT] Debounced Button Handler & FSM Scheduler initialized."));
+    modeButton.begin(); // Fixes Issue #2: sets INPUT_PULLUP and initializes debounce logic
     ledEngine.begin();
-
-    // Defect #2 still present: plain INPUT, no debouncing
-    pinMode(PIN_MODE_BUTTON, INPUT);
 }
 
 void loop() {
-    // Basic polling of button (Defect #2 still present)
-    if (digitalRead(PIN_MODE_BUTTON) == LOW) {
+    // 1. Debounced button polling (Fixes Issue #2)
+    ButtonEvent btnEvent = modeButton.update();
+    if (btnEvent == EVENT_SHORT_PRESS) {
         ledEngine.nextState();
+        Serial.print(F("[BUTTON] Short Press: Switching to "));
+        Serial.println(getStateName(ledEngine.getState()));
+    } else if (btnEvent == EVENT_LONG_PRESS) {
+        ledEngine.setState(STATE_NORMAL_BLINK);
+        Serial.println(F("[BUTTON] Long Press (>1.5s): Resetting to STATE_NORMAL_BLINK"));
     }
 
-    // Non-blocking LED update (Fixes Issue #1: eliminates blocking delay())
+    // 2. Non-blocking LED update (Fixes Issue #1)
     ledEngine.update();
 
-    // Telemetry tracking
+    // 3. Telemetry tracking
     loopCounter++;
     unsigned long currentMillis = millis();
     if (currentMillis - lastTelemetryTime >= TELEMETRY_INTERVAL_MS) {
