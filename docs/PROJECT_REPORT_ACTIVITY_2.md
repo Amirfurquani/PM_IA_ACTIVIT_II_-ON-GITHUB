@@ -14,7 +14,7 @@
 - **Marks Allocated:** 15 Marks
 - **Student Name:** Amir Furquani
 - **PRN:** 202301070165
-- **Course Teacher:** Dr. Ashish Mulajkar
+- **Course Teacher:** Nutan Bansode
 
 ---
 
