@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "author": "Amir Furquani",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 100, "left": 100, "attrs": {} },
+    { "type": "wokwi-pushbutton", "id": "btn1", "top": 150, "left": -20, "attrs": { "color": "green", "label": "MODE" } },
+    { "type": "wokwi-led", "id": "led_ext", "top": 40, "left": 480, "attrs": { "color": "red", "label": "STATUS/EXT" } },
+    { "type": "wokwi-led", "id": "led_hb", "top": 120, "left": 480, "attrs": { "color": "blue", "label": "HEARTBEAT" } }
+  ],
+  "connections": [
+    [ "uno:GND.1", "btn1:1.l", "black", [ "v0" ] ],
+    [ "uno:2", "btn1:2.l", "green", [ "v0" ] ],
+    [ "uno:10", "led_ext:A", "orange", [ "v0" ] ],
+    [ "led_ext:C", "uno:GND.2", "black", [ "v0" ] ],
+    [ "uno:9", "led_hb:A", "blue", [ "v0" ] ],
+    [ "led_hb:C", "uno:GND.2", "black", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}

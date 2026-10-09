@@ -1,0 +1,16 @@
+# Compiled files and binaries
+*.hex
+*.elf
+*.bin
+build/
+
+# Operating system artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*~
